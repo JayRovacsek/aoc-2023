@@ -11,13 +11,15 @@ Simply to keep exploring the language. Flakes are also a brilliant concept to pr
 Non-direnv/lorri method for day 1, solution 1:
 
 ```shell
-nix run .#solution-1-1
+nix run .#1-1
 ```
+
+TOTO: below is not implemented just yet, will solve before AOC
 
 Direnv/lorri method (assumed automatic run of `nix develop`) for day 1, solution 1:
 
 ```sh
-solution-1-1
+1-1
 ```
 
 Replace `1-1` with `$DAY-$PART` for other options, note that the package
