@@ -1,0 +1,4 @@
+# Base nix jazz
+.direnv
+.pre-commit-config.yaml
+result
