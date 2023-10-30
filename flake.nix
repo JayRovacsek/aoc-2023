@@ -93,7 +93,7 @@
                 deadnix.enable = true;
                 nixfmt.enable = true;
                 prettier.enable = true;
-                statix.enable = false;
+                statix.enable = true;
 
                 # Custom hooks
                 statix-write = {
