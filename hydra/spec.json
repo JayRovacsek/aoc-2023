@@ -1,6 +1,6 @@
 {
   "checkinterval": 60,
-  "description": "nix-config auto-generated",
+  "description": "auto-generated",
   "emailoverride": "",
   "enabled": 1,
   "enableemail": false,
@@ -9,7 +9,7 @@
     "nixexpr": {
       "emailresponsible": false,
       "type": "git",
-      "value": "https://github.com/JayRovacsek/aoc-2023 main"
+      "value": "https://github.com/JayRovacsek/aoc-2023 init"
     },
     "nixpkgs": {
       "emailresponsible": false,
@@ -19,7 +19,7 @@
     "pulls": {
       "emailresponsible": false,
       "type": "githubpulls",
-      "value": "JayRovacsek nix-config"
+      "value": "JayRovacsek aoc-2023"
     }
   },
   "keepnr": 3,
