@@ -8,12 +8,7 @@
     # Transitive input
     crane = {
       url = "github:ipetkov/crane";
-      inputs = {
-        flake-compat.follows = "flake-compat";
-        flake-utils.follows = "flake-utils";
-        nixpkgs.follows = "nixpkgs";
-        rust-overlay.follows = "rust-overlay";
-      };
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Required to wrap shell outputs nicely
@@ -61,6 +56,10 @@
         inherit self;
 
         common = import ./common { inherit self; };
+        hydraJobs = import ./hydra {
+          inherit self;
+          inherit (nixpkgs) lib;
+        };
         lib = import ./lib { inherit self; };
       };
 
