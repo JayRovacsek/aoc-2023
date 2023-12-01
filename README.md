@@ -36,3 +36,33 @@ nix repl
 
 From here you should be able to inspect all outputs of the flake as per
 normal.
+
+## Build Status
+
+If you're interested in the build status of the solutions, I've added a hydra project for aoc into my personal hydra instance.
+You can check it out further [here](http://dragonite.lan:3000/jobset/aoc-2023/main) or I'll attempt to keep the below up to date.
+
+Note that passing means the solution _builds_ not that it is correct. The half-implemented checks outputs should achieve this, I need more time to
+complete that implementation
+
+### Day 1
+
+#### aarch64-linux
+
+##### Part 1
+
+![Endpoint Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fhydra.rovacsek.com%2Fjob%2Faoc-2023%2Fmain%2Fpackages.aarch64-linux.1-1%2Fshield)
+
+##### Part 2
+
+![Endpoint Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fhydra.rovacsek.com%2Fjob%2Faoc-2023%2Fmain%2Fpackages.aarch64-linux.1-2%2Fshield)
+
+#### x86_64-linux
+
+##### Part 1
+
+![Endpoint Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fhydra.rovacsek.com%2Fjob%2Faoc-2023%2Fmain%2Fpackages.x86_64-linux.1-1%2Fshield)
+
+##### Part 2
+
+![Endpoint Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fhydra.rovacsek.com%2Fjob%2Faoc-2023%2Fmain%2Fpackages.x86_64-linux.1-2%2Fshield)
