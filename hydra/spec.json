@@ -9,7 +9,7 @@
     "nixexpr": {
       "emailresponsible": false,
       "type": "git",
-      "value": "https://github.com/JayRovacsek/aoc-2023 init"
+      "value": "https://github.com/JayRovacsek/aoc-2023 main"
     },
     "nixpkgs": {
       "emailresponsible": false,
