@@ -127,7 +127,7 @@
           # on the nur via: pkgs.nur.repos.JayRovacsek if utilising the nur overlay
           # (all systems in this flake apply this opinion via the common.modules)
           # construct
-          packages = self.outputs.lib.wrap-solutions pkgs;
+          packages = self.lib.wrap-solutions pkgs;
           #   self.outputs.common.solutions;
           # import ./packages { inherit self pkgs; };
         });
