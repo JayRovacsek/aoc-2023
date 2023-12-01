@@ -1,0 +1,30 @@
+{
+  "checkinterval": 60,
+  "description": "auto-generated",
+  "emailoverride": "",
+  "enabled": 1,
+  "enableemail": false,
+  "hidden": false,
+  "inputs": {
+    "nixexpr": {
+      "emailresponsible": false,
+      "type": "git",
+      "value": "https://github.com/JayRovacsek/aoc-2023 main"
+    },
+    "nixpkgs": {
+      "emailresponsible": false,
+      "type": "path",
+      "value": "/nix/store/19kjl5p3hx3l51yfnii653a3qzm4l6hf-source"
+    },
+    "pulls": {
+      "emailresponsible": false,
+      "type": "githubpulls",
+      "value": "JayRovacsek aoc-2023"
+    }
+  },
+  "keepnr": 3,
+  "nixexprinput": "nixexpr",
+  "nixexprpath": "hydra/jobsets.nix",
+  "schedulingshares": 100,
+  "type": 0
+}
