@@ -1,8 +1,9 @@
 { self, lib }:
 let
-  inherit (builtins) hasAttr foldl' map readFile elemAt attrNames attrValues;
-  inherit (lib) drop max toInt splitString;
-  inherit (self.lib) split-lines flatten;
+  inherit (builtins)
+    attrNames attrValues elemAt hasAttr foldl' map readFile toString;
+  inherit (lib) drop toInt max pipe splitString;
+  inherit (self.lib) flatten split-lines;
 
   input = readFile ../inputs/2;
 
@@ -13,12 +14,6 @@ let
     Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
     Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
   '';
-
-  lines = split-lines input;
-
-  # only 12 red cubes, 13 green cubes, and 14 blue cubes
-
-  example-lines = split-lines example;
 
   parse-round = round:
     map (y:
@@ -35,11 +30,9 @@ let
       rounds = parse-rounds (drop 1 parts);
     in { inherit id rounds; };
 
-  games = map parse-game lines;
+  parse-games = l: map parse-game l;
 
-  example-games = map parse-game example-lines;
-
-  minimum-games = map (game:
+  minimum-game = game:
     foldl' (acc: x:
       let
         colour = elemAt (attrNames x) 0;
@@ -48,29 +41,19 @@ let
       in if hasAttr colour acc then
         (acc // { ${colour} = max acc.${colour} value; })
       else
-        acc // x) { } game.rounds) games;
+        acc // x) { } game.rounds;
 
-  example-minimum-games = map (game:
-    foldl' (acc: x:
-      let
-        colour = elemAt (attrNames x) 0;
-        value = elemAt (attrValues x) 0;
+  minimum-games = games: map minimum-game games;
 
-      in if hasAttr colour acc then
-        (acc // { ${colour} = max acc.${colour} value; })
-      else
-        acc // x) { } game.rounds) example-games;
+  powers = l: map (x: foldl' (acc: y: acc * y) 1 (attrValues x)) l;
 
-  powers = map (x: foldl' (acc: y: acc * y) 1 (attrValues x)) minimum-games;
+  sum = l: foldl' (acc: x: x + acc) 0 l;
 
-  example-powers =
-    map (x: foldl' (acc: y: acc * y) 1 (attrValues x)) example-minimum-games;
-
-  sum = foldl' (acc: x: x + acc) 0 powers;
-
-  example-sum = foldl' (acc: x: x + acc) 0 example-powers;
+  example-answer =
+    pipe example [ split-lines parse-games minimum-games powers sum ];
+  answer = pipe input [ split-lines parse-games minimum-games powers sum ];
 
 in ''
-  Answer was: ${builtins.toString sum}
-  Example value result was: ${builtins.toString example-sum}
+  Answer was: ${toString answer}
+  Example value result was: ${toString example-answer}
 ''
