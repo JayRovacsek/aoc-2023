@@ -1,9 +1,10 @@
 { self, lib }:
 let
-  inherit (builtins) all filter foldl' map readFile elemAt;
-  inherit (lib) drop toInt splitString;
-  inherit (self.lib) split-lines flatten;
+  inherit (builtins) attrValues attrNames all elemAt filter foldl' readFile;
+  inherit (lib) pipe;
+  inherit (self.lib) split-lines;
 
+  inherit (import ./2-shared.nix { inherit self lib; }) parse-games;
   input = readFile ../inputs/2;
 
   example = ''
@@ -14,52 +15,37 @@ let
     Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
   '';
 
-  lines = split-lines input;
-
-  # only 12 red cubes, 13 green cubes, and 14 blue cubes
-
-  example-lines = split-lines example;
-
-  parse-round = round:
-    map (y:
-      let sub-parts = splitString " " y;
-      in {
-        colour = elemAt sub-parts 1;
-        number = toInt (elemAt sub-parts 0);
-      }) round;
-
-  parse-rounds = rounds:
-    flatten (map (x: parse-round (splitString ", " x)) rounds);
-
-  parse-game = l:
-    let
-      parts = flatten (map (x: splitString "; " x) (splitString ": " l));
-      id = toInt (elemAt (splitString " " (elemAt parts 0)) 1);
-      rounds = parse-rounds (drop 1 parts);
-    in { inherit id rounds; };
-
-  games = map parse-game lines;
-
-  example-games = map parse-game example-lines;
-
   rule-set = {
     red = 12;
     green = 13;
     blue = 14;
   };
 
-  possible-games =
-    filter (game: all (r: r.number <= rule-set.${r.colour}) game.rounds) games;
+  example-answer = pipe example [
+    split-lines
+    parse-games
+    (filter (game:
+      all (round:
+        let
+          colour = elemAt (attrNames round) 0;
+          value = elemAt (attrValues round) 0;
+        in value <= rule-set.${colour}) game.rounds))
+    (foldl' (acc: game: game.id + acc) 0)
+  ];
 
-  example-possible-games =
-    filter (game: all (r: r.number <= rule-set.${r.colour}) game.rounds)
-    example-games;
-
-  sum = foldl' (acc: game: game.id + acc) 0 possible-games;
-
-  example-sum = foldl' (acc: game: game.id + acc) 0 example-possible-games;
+  answer = pipe input [
+    split-lines
+    parse-games
+    (filter (game:
+      all (round:
+        let
+          colour = elemAt (attrNames round) 0;
+          value = elemAt (attrValues round) 0;
+        in value <= rule-set.${colour}) game.rounds))
+    (foldl' (acc: game: game.id + acc) 0)
+  ];
 
 in ''
-  Answer was: ${builtins.toString sum}
-  Example value result was: ${builtins.toString example-sum}
+  Answer was: ${builtins.toString answer}
+  Example value result was: ${builtins.toString example-answer}
 ''

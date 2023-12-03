@@ -1,12 +1,8 @@
 { self, ... }:
-let
-  inherit (builtins)
-    filter foldl' genList hasAttr map match pathExists replaceStrings split
-    toString typeOf;
-  inherit (self.inputs.nixpkgs) lib;
-
-  inherit (lib) foldlAttrs;
-
+with builtins;
+with self.inputs.nixpkgs.lib;
+let inherit (self.inputs.nixpkgs) lib;
+in rec {
   flatten = a: foldl' (acc: x: acc ++ x) [ ] a;
 
   generate-days = n: genList (x: x + 1) n;
@@ -32,11 +28,15 @@ let
     map (x: filter (y: typeOf y == "string") x)
     (filter (x: typeOf x == "list") (split regex s));
 
+  powers = l: map (x: foldl' (acc: y: acc * y) 1 (attrValues x)) l;
+
   recurse-replace = from: to: s:
     let replacement = replaceStrings from to s;
     in if s == replacement then s else recurse-replace from to replacement;
 
   split-lines = s: filter (x: typeOf x == "string" && x != "") (split "\n" s);
+
+  sum = l: foldl' (acc: x: x + acc) 0 l;
 
   wrap-solutions = pkgs:
     foldlAttrs (acc: name: _:
@@ -62,8 +62,4 @@ let
         };
 
       }) { } self.common.solutions;
-in {
-  inherit generate-days generate-parts generate-solutions flatten
-    is-numeric-literal load-solutions parse-explicit-matches split-lines
-    wrap-solutions recurse-replace;
 }
