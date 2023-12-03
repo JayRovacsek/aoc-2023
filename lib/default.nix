@@ -1,49 +1,51 @@
 { self, ... }:
-let
-  inherit (builtins) replaceStrings;
-  inherit (self.inputs.nixpkgs) lib;
+with builtins;
+with self.inputs.nixpkgs.lib;
+let inherit (self.inputs.nixpkgs) lib;
+in rec {
+  flatten = a: foldl' (acc: x: acc ++ x) [ ] a;
 
-  flatten = a: builtins.foldl' (acc: x: acc ++ x) [ ] a;
+  generate-days = n: genList (x: x + 1) n;
 
-  generate-days = n: builtins.genList (x: x + 1) n;
   generate-parts = generate-days;
-  generate-solutions = days: parts:
-    builtins.foldl' (acc: day:
-      acc ++ (builtins.map
-        (part: "${builtins.toString day}-${builtins.toString part}") parts)) [ ]
-    days;
 
-  is-numeric-literal = c: (builtins.match "[[:digit:]]+" c) == [ ];
+  generate-solutions = days: parts:
+    foldl'
+    (acc: day: acc ++ (map (part: "${toString day}-${toString part}") parts))
+    [ ] days;
+
+  is-numeric-literal = c: (match "[[:digit:]]+" c) == [ ];
 
   load-solutions = path: solutions:
-    builtins.foldl' (acc: solution:
+    foldl' (acc: solution:
       let p = ./. + "${path}/${solution}.nix";
-      in if builtins.pathExists p then
+      in if pathExists p then
         (acc // { ${solution} = import p { inherit self lib; }; })
       else
         acc // { ${solution} = "Solution is missing"; }) { } solutions;
 
-  parse-explicit-matches = with builtins;
-    s: regex:
+  parse-explicit-matches = s: regex:
     map (x: filter (y: typeOf y == "string") x)
     (filter (x: typeOf x == "list") (split regex s));
+
+  powers = l: map (x: foldl' (acc: y: acc * y) 1 (attrValues x)) l;
 
   recurse-replace = from: to: s:
     let replacement = replaceStrings from to s;
     in if s == replacement then s else recurse-replace from to replacement;
 
-  split-lines = with builtins;
-    s:
-    filter (x: typeOf x == "string" && x != "") (split "\n" s);
+  split-lines = s: filter (x: typeOf x == "string" && x != "") (split "\n" s);
+
+  sum = l: foldl' (acc: x: x + acc) 0 l;
 
   wrap-solutions = pkgs:
-    lib.foldlAttrs (acc: name: _:
+    foldlAttrs (acc: name: _:
       let
         bin = pkgs.writeShellScriptBin name ''
           ${pkgs.nix}/bin/nix eval ${self}#common.solutions."${name}"
         '';
         pname = name;
-        version = if builtins.hasAttr "rev" self.outputs.self then
+        version = if hasAttr "rev" self.outputs.self then
           self.outputs.self.rev
         else
           self.outputs.self.dirtyRev;
@@ -60,8 +62,4 @@ let
         };
 
       }) { } self.common.solutions;
-in {
-  inherit generate-days generate-parts generate-solutions flatten
-    is-numeric-literal load-solutions parse-explicit-matches split-lines
-    wrap-solutions recurse-replace;
 }

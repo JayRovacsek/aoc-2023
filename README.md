@@ -66,3 +66,25 @@ complete that implementation
 ##### Part 2
 
 ![Endpoint Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fhydra.rovacsek.com%2Fjob%2Faoc-2023%2Fmain%2Fpackages.x86_64-linux.1-2%2Fshield)
+
+### Day 2
+
+#### aarch64-linux
+
+##### Part 1
+
+![Endpoint Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fhydra.rovacsek.com%2Fjob%2Faoc-2023%2Fmain%2Fpackages.aarch64-linux.2-1%2Fshield)
+
+##### Part 2
+
+![Endpoint Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fhydra.rovacsek.com%2Fjob%2Faoc-2023%2Fmain%2Fpackages.aarch64-linux.2-2%2Fshield)
+
+#### x86_64-linux
+
+##### Part 1
+
+![Endpoint Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fhydra.rovacsek.com%2Fjob%2Faoc-2023%2Fmain%2Fpackages.x86_64-linux.2-1%2Fshield)
+
+##### Part 2
+
+![Endpoint Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fhydra.rovacsek.com%2Fjob%2Faoc-2023%2Fmain%2Fpackages.x86_64-linux.2-2%2Fshield)
